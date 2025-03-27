@@ -2,7 +2,11 @@
 const CLIENT_ID = '22aa1a7303fa47dd99e3a35c4e1fff73'; // Your Spotify Client ID
 const REDIRECT_URI = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:8000'
-    : window.location.origin;
+    : 'https://yeezer.netlify.app'; // Replace this with your actual Netlify URL
+
+console.log('Current hostname:', window.location.hostname);
+console.log('Using redirect URI:', REDIRECT_URI);
+
 const SCOPES = 'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state';
 
 let accessToken = null;
