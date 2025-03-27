@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YEEZER - Kanye West Song Guessing Game</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1DB954;
+            margin-bottom: 30px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #282828;
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 10px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 10px;
+            background: #1DB954;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .round-display {
+            color: #B3B3B3;
+            margin-bottom: 20px;
+        }
+
+        .player-container {
+            background: #282828;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .player-button {
+            background: #1DB954;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .player-button:hover {
+            background: #1ed760;
+        }
+
+        .player-button:disabled {
+            background: #404040;
+            cursor: not-allowed;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .option {
+            background: #282828;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: #383838;
+        }
+
+        .option.correct {
+            background: #1DB954;
+        }
+
+        .option.incorrect {
+            background: #E91429;
+        }
+
+        #next-song {
+            background: #1DB954;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        #next-song:disabled {
+            background: #282828;
+            cursor: not-allowed;
+        }
+
+        #next-song:hover:not(:disabled) {
+            background: #1ed760;
+        }
+
+        .score-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #282828;
+            padding: 15px 25px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-label {
+            color: #B3B3B3;
+        }
+
+        #score {
+            color: #1DB954;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .loading {
+            color: #1DB954;
+            font-size: 18px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #1DB954;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            color: #E91429;
+            background: rgba(233, 20, 41, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .timer-display {
+            color: #B3B3B3;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard {
+            background: #282828;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .leaderboard h2 {
+            color: #1DB954;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #383838;
+            border-radius: 5px;
+        }
+
+        .leaderboard-item span {
+            color: #B3B3B3;
+        }
+    </style>
+    <!-- Add favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <div class="container">
+        <h1>YEEZER</h1>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div id="round" class="round-display">Round 1 of 10</div>
+        <div class="timer-display">
+            Time: <span id="timer">0:00</span>
+        </div>
+        <div class="player-container">
+            <div class="player-controls">
+                <button id="play-pause" class="player-button" disabled>Play</button>
+                <button id="stop" class="player-button" disabled>Stop</button>
+            </div>
+        </div>
+        <div id="options" class="options-container">
+            <div class="loading">Loading songs...</div>
+        </div>
+        <button id="next-song" disabled>Next Song</button>
+    </div>
+    <div class="score-container">
+        <span class="score-label">Score:</span>
+        <span id="score">0</span>
+    </div>
+    <div id="leaderboard" class="leaderboard">
+        <h2>Top Times</h2>
+        <div id="leaderboard-list"></div>
+    </div>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+version: '3'
+services:
+  yeezer:
+    build: .
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/usr/share/nginx/html
+    environment:
+      - SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}
+      - SPOTIFY_REDIRECT_URI=${SPOTIFY_REDIRECT_URI}

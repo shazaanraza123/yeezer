@@ -1,0 +1,58 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    padding: 2rem;
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .game-container {
+        padding: 1rem;
+    }
+
+    .options-container {
+        grid-template-columns: 1fr;
+    }
+
+    .option {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .container {
+        padding: 1rem;
+    }
+
+    h1 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Rest of your existing CSS remains the same */
